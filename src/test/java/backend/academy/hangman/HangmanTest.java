@@ -12,59 +12,65 @@ public class HangmanTest {
 
     @Test
     void createModelTest() {
+        // Arrange
         Model hangman = new Hangman();
-        assertThat(hangman.getMaxMissesCount())
-            .isEqualTo(-1);
-        assertThat(hangman.getStatus())
-            .isNull();
-        assertThat(hangman.getMisses())
-            .isNull();
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(-1);
-        assertThat(hangman.getHits())
-            .isNull();
-        assertThat(hangman.getWordRepresentation())
-            .isNull();
-        assertThat(hangman.getSecretWordHint())
-            .isNull();
 
+        // Act & Arrange (initial state)
+        assertThat(hangman.getMaxMissesCount()).isEqualTo(-1);
+        assertThat(hangman.getStatus()).isNull();
+        assertThat(hangman.getMisses()).isNull();
+        assertThat(hangman.getMissesCount()).isEqualTo(-1);
+        assertThat(hangman.getHits()).isNull();
+        assertThat(hangman.getWordRepresentation()).isNull();
+        assertThat(hangman.getSecretWordHint()).isNull();
+
+        // Act (create model)
         hangman = hangman.createModel(secretWord, maxMissesCount);
-        assertThat(hangman.getMaxMissesCount())
-            .isEqualTo(maxMissesCount);
-        assertThat(hangman.getStatus())
-            .isEqualTo(new Status(Status.GuessStatus.NONE, Status.GameStatus.NONE));
-        assertThat(hangman.getMisses())
-            .isEmpty();
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(0);
-        assertThat(hangman.getHits())
-            .isEmpty();
+
+        // Assert (after creation)
+        assertThat(hangman.getMaxMissesCount()).isEqualTo(maxMissesCount);
+        assertThat(hangman.getStatus()).isEqualTo(new Status(Status.GuessStatus.NONE, Status.GameStatus.NONE));
+        assertThat(hangman.getMisses()).isEmpty();
+        assertThat(hangman.getMissesCount()).isEqualTo(0);
+        assertThat(hangman.getHits()).isEmpty();
         assertThat(hangman.getWordRepresentation())
             .isEqualTo(new ArrayList<>(Collections.nCopies(secretWord.word().length(), '_')));
-        assertThat(hangman.getSecretWordHint())
-            .isEqualTo(secretWord.hint());
-
+        assertThat(hangman.getSecretWordHint()).isEqualTo(secretWord.hint());
     }
 
     @Test
     void getMaxMissesCountTest() {
+        // Arrange
         Model hangman = new Hangman();
+
+        // Act (create model with maxMissesCount)
         hangman = hangman.createModel(secretWord, maxMissesCount);
+
+        // Assert
         assertThat(hangman.getMaxMissesCount()).isEqualTo(maxMissesCount);
 
+        // Act (create model with default maxMissesCount)
         hangman = hangman.createModel(secretWord, -1);
+
+        // Assert
         assertThat(hangman.getMaxMissesCount()).isEqualTo(Constants.DEFAULT_MAX_MISSES_COUNT);
     }
 
     @Test
     void getSecretWordHintTest() {
+        // Arrange
         Model hangman = new Hangman();
+
+        // Act
         hangman = hangman.createModel(secretWord, maxMissesCount);
+
+        // Assert
         assertThat(hangman.getSecretWordHint()).isEqualTo("домашнее животное, мурлыкает");
     }
 
     @Test
     void hitsTest() {
+        // Arrange
         Model hangman = new Hangman();
         hangman = hangman.createModel(secretWord, maxMissesCount);
         final Status initialStatus = new Status(Status.GuessStatus.NONE, Status.GameStatus.NONE);
@@ -74,59 +80,53 @@ public class HangmanTest {
         List<Character> hits = new ArrayList<>();
         List<Character> wordRepresentation = new ArrayList<>(Collections.nCopies(secretWord.word().length(), '_'));
 
-        // No guesses
-        assertThat(hangman.getStatus())
-            .isEqualTo(initialStatus);
-        assertThat(hangman.getHits())
-            .isEqualTo(hits);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
+        // Assert (initial state)
+        assertThat(hangman.getStatus()).isEqualTo(initialStatus);
+        assertThat(hangman.getHits()).isEqualTo(hits);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
 
-        // 1st guess
+        // Act (1st guess)
         hits.add('К');
         wordRepresentation.set(0, 'К');
         hangman.guess('К');
-        assertThat(hangman.getStatus())
-            .isEqualTo(hitStatus);
-        assertThat(hangman.getHits())
-            .isEqualTo(hits);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
 
-        // same guess
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(hitStatus);
+        assertThat(hangman.getHits()).isEqualTo(hits);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
+
+        // Act (same guess)
         hangman.guess('К');
-        assertThat(hangman.getStatus())
-            .isEqualTo(alreadyGuessedStatus);
-        assertThat(hangman.getHits())
-            .isEqualTo(hits);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
 
-        // 2nd guessd lowercase
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(alreadyGuessedStatus);
+        assertThat(hangman.getHits()).isEqualTo(hits);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
+
+        // Act (2nd guess, lowercase)
         hits.add('Т');
         wordRepresentation.set(2, 'Т');
         hangman.guess('т');
-        assertThat(hangman.getStatus())
-            .isEqualTo(hitStatus);
-        assertThat(hangman.getHits())
-            .isEqualTo(hits);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
 
-        // 3rd guess
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(hitStatus);
+        assertThat(hangman.getHits()).isEqualTo(hits);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
+
+        // Act (3rd guess)
         hits.add('О');
         wordRepresentation.set(1, 'О');
         hangman.guess('О');
-        assertThat(hangman.getStatus())
-            .isEqualTo(winStaus);
-        assertThat(hangman.getHits())
-            .isEqualTo(hits);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
+
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(winStaus);
+        assertThat(hangman.getHits()).isEqualTo(hits);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
     }
 
     @Test
     void missesAndInvalidGuessesTest() {
+        // Arrange
         Model hangman = new Hangman();
         hangman = hangman.createModel(secretWord, maxMissesCount);
         final Status initialStatus = new Status(Status.GuessStatus.NONE, Status.GameStatus.NONE);
@@ -138,72 +138,59 @@ public class HangmanTest {
         List<Character> wordRepresentation = new ArrayList<>(Collections.nCopies(secretWord.word().length(), '_'));
         int missesCount = 0;
 
-        // No guesses
-        assertThat(hangman.getStatus())
-            .isEqualTo(initialStatus);
-        assertThat(hangman.getMisses())
-            .isEqualTo(misses);
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(missesCount);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
+        // Assert (initial state)
+        assertThat(hangman.getStatus()).isEqualTo(initialStatus);
+        assertThat(hangman.getMisses()).isEqualTo(misses);
+        assertThat(hangman.getMissesCount()).isEqualTo(missesCount);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
 
-        // 1st guess
+        // Act (1st miss guess)
         misses.add('А');
         missesCount++;
         hangman.guess('А');
-        assertThat(hangman.getStatus())
-            .isEqualTo(missStatus);
-        assertThat(hangman.getMisses())
-            .isEqualTo(misses);
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(missesCount);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
 
-        // same guess
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(missStatus);
+        assertThat(hangman.getMisses()).isEqualTo(misses);
+        assertThat(hangman.getMissesCount()).isEqualTo(missesCount);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
+
+        // Act (same guess)
         hangman.guess('А');
-        assertThat(hangman.getStatus())
-            .isEqualTo(alreadyGuessedStatus);
-        assertThat(hangman.getMisses())
-            .isEqualTo(misses);
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(missesCount);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
 
-        // invalid guesses
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(alreadyGuessedStatus);
+        assertThat(hangman.getMisses()).isEqualTo(misses);
+        assertThat(hangman.getMissesCount()).isEqualTo(missesCount);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
+
+        // Act (invalid guess)
         hangman.guess('Z');
-        assertThat(hangman.getStatus())
-            .isEqualTo(invalidStatus);
-        assertThat(hangman.getMisses())
-            .isEqualTo(misses);
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(missesCount);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
 
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(invalidStatus);
+        assertThat(hangman.getMisses()).isEqualTo(misses);
+        assertThat(hangman.getMissesCount()).isEqualTo(missesCount);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
+
+        // Act (another invalid guess)
         hangman.guess('Ѳ');
-        assertThat(hangman.getStatus())
-            .isEqualTo(invalidStatus);
-        assertThat(hangman.getMisses())
-            .isEqualTo(misses);
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(missesCount);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
 
-        // 2nd guess (lowercase)
+        // Assert
+        assertThat(hangman.getStatus()).isEqualTo(invalidStatus);
+        assertThat(hangman.getMisses()).isEqualTo(misses);
+        assertThat(hangman.getMissesCount()).isEqualTo(missesCount);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
+
+        // Act (2nd miss, lowercase)
         misses.add('Ё');
         missesCount++;
         hangman.guess('ё');
-        assertThat(hangman.getStatus())
-            .isEqualTo(loseStaus);
-        assertThat(hangman.getMisses())
-            .isEqualTo(misses);
-        assertThat(hangman.getMissesCount())
-            .isEqualTo(missesCount);
-        assertThat(hangman.getWordRepresentation())
-            .isEqualTo(wordRepresentation);
+
+        // Assert (lose state)
+        assertThat(hangman.getStatus()).isEqualTo(loseStaus);
+        assertThat(hangman.getMisses()).isEqualTo(misses);
+        assertThat(hangman.getMissesCount()).isEqualTo(missesCount);
+        assertThat(hangman.getWordRepresentation()).isEqualTo(wordRepresentation);
     }
 }
