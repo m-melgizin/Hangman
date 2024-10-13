@@ -1,22 +1,10 @@
 package backend.academy.hangman;
 
-/**
- * The main game class.
- * <p>
- * This class is responsible for the main game loop and interaction with the view and model.
- */
 public class Game implements Controller {
     private Model model;
     private final View view;
     private final DictionaryReader dictionaryReader;
 
-    /**
-     * Creates a new game.
-     *
-     * @param model the model of the game
-     * @param view  the view of the game
-     * @param dictionaryReader the dictionary reader
-     */
     public Game(Model model, View view, DictionaryReader dictionaryReader) {
         this.model = model;
         this.view = view;

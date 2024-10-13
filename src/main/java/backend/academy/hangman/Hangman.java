@@ -7,13 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Class implementing the game model interface.
- * <p>
- * The class stores the current state of the game and provides
- * methods to make a guess, get the game status, max misses count,
- * list of missed letters and the current word representation.
- */
 public class Hangman implements Model {
     private final DictionaryWord secretWord;
     private final int maxMissesCount;
@@ -24,15 +17,6 @@ public class Hangman implements Model {
     private List<Character> hits;
     private List<Character> wordRepresentation;
 
-    /**
-     * Constructor for the Hangman class.
-     * <p>
-     * The constructor creates a new game model with the specified
-     * secret word and max misses count.
-     *
-     * @param secretWord the secret word
-     * @param maxMissesCount the max misses count
-     */
     private Hangman(DictionaryWord secretWord, int maxMissesCount) {
         this.secretWord = secretWord;
         this.maxMissesCount = maxMissesCount >= 0 ? maxMissesCount : Constants.DEFAULT_MAX_MISSES_COUNT;
@@ -46,11 +30,6 @@ public class Hangman implements Model {
         this.wordRepresentation = new ArrayList<>(Collections.nCopies(secretWord.word().length(), '_'));
     }
 
-    /**
-     * Constructor for the Hangman class.
-     * <p>
-     * The constructor creates a new game model with default values.
-     */
     public Hangman() {
         this.secretWord = null;
         this.maxMissesCount = -1;
@@ -82,14 +61,6 @@ public class Hangman implements Model {
         currentStatus = new Status(guessStatus, currentStatus.gameStatus());
     }
 
-    /**
-     * Adds a hit to the game state.
-     * <p>
-     * The method adds the specified letter to the hits list and
-     * updates the word representation.
-     *
-     * @param letter the letter to add
-     */
     private void addHit(char letter) {
         hits.add(letter);
 
@@ -109,14 +80,6 @@ public class Hangman implements Model {
         }
     }
 
-    /**
-     * Adds a miss to the game state.
-     * <p>
-     * The method adds the specified letter to the misses list
-     * and updates the misses count.
-     *
-     * @param letter the letter to add
-     */
     private void addMiss(char letter) {
         misses.add(letter);
         missesCount++;

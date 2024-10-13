@@ -10,12 +10,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
-/**
- * The game view console implementation.
- *
- * <p>
- * This class is responsible for user communication.
- */
 public class ConsoleView implements View {
 
     @SuppressWarnings("MultipleStringLiterals")
@@ -148,20 +142,9 @@ public class ConsoleView implements View {
     private final SecureRandom random;
 
 
-    /**
-     * Creates a new {@link ConsoleView} that uses the standard input and output.
-     */
     public ConsoleView() {
         this(System.in, System.out);
     }
-
-    /**
-     * Creates a new {@link ConsoleView} that uses the specified input and output
-     * streams.
-     *
-     * @param inputStream the input stream
-     * @param outputStream the output stream
-     */
 
     public ConsoleView(InputStream inputStream, OutputStream outputStream) {
         this.inputStream = inputStream;
@@ -438,23 +421,11 @@ public class ConsoleView implements View {
         screenBuffer.set(row, col, wordRepresentationString);
     }
 
-    /**
-     * The screen buffer class.
-     * <p>
-     * This class is responsible for drawing on the screen.
-     */
     private static class ScreenBuffer {
         @Getter private final int rows;
         @Getter private final int cols;
         private final char[][] buffer;
 
-        /**
-         * The screen buffer constructor.
-         * <p>
-         * This constructor is responsible for initializing the screen buffer.
-         * @param rows the screen buffer rows
-         * @param cols the screen buffer columns
-         */
         ScreenBuffer(int rows, int cols) {
             this.rows = rows;
             this.cols = cols;
@@ -464,26 +435,12 @@ public class ConsoleView implements View {
             }
         }
 
-        /**
-         * Clears the screen buffer.
-         * <p>
-         * This method is responsible for clearing the screen buffer by filling it with spaces.
-         */
         public void clear() {
             for (char[] row : buffer) {
                 Arrays.fill(row, ' ');
             }
         }
 
-        /**
-         * Clears the screen buffer rectangle.
-         * <p>
-         * This method is responsible for clearing the screen buffer rectangle by filling it with spaces.
-         * @param top the top row of the rectangle
-         * @param left the left column of the rectangle
-         * @param bottom the bottom row of the rectangle
-         * @param right the right column of the rectangle
-         */
         public void clear(int top, int left, int bottom, int right) {
             if (0 <= top && top <= rows && 0 <= left && left <= cols
                 && 0 <= bottom && bottom <= rows && 0 <= right && right <= cols) {
@@ -503,15 +460,6 @@ public class ConsoleView implements View {
             }
         }
 
-        /**
-         * Gets the character at the specified position.
-         * <p>
-         * This method is responsible for getting the character at the specified position.
-         * @param row the row of the character
-         * @param col the column of the character
-         * @return the character at the specified position
-         * @throws IndexOutOfBoundsException if the row or column is out of range
-         */
         public char get(int row, int col) {
             if (0 <= row && row < rows && 0 <= col && col < cols) {
                 return buffer[row][col];
@@ -520,15 +468,6 @@ public class ConsoleView implements View {
                 String.format("get(row=%d, col=%d), rows=%d, cols=%d", row, col, rows, cols));
         }
 
-        /**
-         * Sets the character at the specified position.
-         * <p>
-         * This method is responsible for setting the character at the specified position.
-         * @param row the row of the character
-         * @param col the column of the character
-         * @param value the character to set
-         * @throws IndexOutOfBoundsException if the row or column is out of range
-         */
         public void set(int row, int col, char value) {
             if (0 <= row && row < rows && 0 <= col && col < cols) {
                 buffer[row][col] = value;
@@ -538,19 +477,7 @@ public class ConsoleView implements View {
             }
         }
 
-        /**
-         * Sets the string at the specified position.
-         * <p>
-         * This method is responsible for setting the string at the specified position.
-         * The string is written to the screen buffer rectangle from left to right.
-         * If the length of the string is greater than the width of the screen buffer
-         * rectangle, the excess characters are ignored.
-         * @param row the row of the string
-         * @param col the column of the string
-         * @param value the string to set
-         * @throws IndexOutOfBoundsException if the row or column is out of range
-         */
-        public void set(int row, int col, String value) {
+         public void set(int row, int col, String value) {
             if (0 <= row && row < rows && 0 <= col && col < cols) {
                 for (int colIndex = col, valueIndex = 0;
                      colIndex < cols && valueIndex < value.length();
@@ -563,13 +490,6 @@ public class ConsoleView implements View {
             }
         }
 
-        /**
-         * Writes the content of the screen buffer to the output stream.
-         * <p>
-         * This method is responsible for writing the content of the screen buffer to the output stream.
-         * The content of the screen buffer is written as a UTF-8 encoded string.
-         * @param outputStream the output stream to write to
-         */
         public void writeToOutputStream(OutputStream outputStream) {
             try {
                 outputStream.write(this.toString().getBytes(StandardCharsets.UTF_8));

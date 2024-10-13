@@ -15,18 +15,6 @@ import java.util.List;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 
-/**
- * Reads words from a CSV file.
- * The CSV file is expected to have three columns, separated by commas:
- * <ul>
- * <li>Category</li>
- * <li>Word</li>
- * <li>Hint</li>
- * </ul>
- * <p>
- * Note that this is a very basic parser, more sophisticated CSVs (quoting or
- * including commas as values) will not be parsed as intended with this approach.
- */
 @Log4j2
 public class CSVDictionaryReader implements DictionaryReader {
     public static final String COMMA = ",";
@@ -65,11 +53,6 @@ public class CSVDictionaryReader implements DictionaryReader {
         }
     }
 
-    /**
-     * Creates a new instance of {@link CSVDictionaryReader}.
-     *
-     * @param separator The separator used in the CSV file.
-     */
     public CSVDictionaryReader(String separator) {
         this.categories = new ArrayList<>();
         this.wordsByCategory = new HashMap<>();
